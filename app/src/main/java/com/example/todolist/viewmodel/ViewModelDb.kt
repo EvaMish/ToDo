@@ -1,8 +1,5 @@
 package com.example.todolist.viewmodel
 
-import android.icu.util.LocaleData
-import android.os.Build
-import android.view.accessibility.AccessibilityNodeInfo.CollectionItemInfo
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,36 +7,38 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.todolist.App
-import com.example.todolist.model.AppDb
-import com.example.todolist.model.TasksDB
+import com.example.todolist.model.db.AppDb
+import com.example.todolist.model.db.TasksDB
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.util.Date
-import java.util.Locale
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
+
 
 class ViewModelDb(private val database: AppDb) : ViewModel() {
     val tasksList = database.dao.getAllTasks()
     val newText = mutableStateOf("")
-    val newDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        mutableStateOf(LocalDate.now().toString())
-    } else {
-        TODO("VERSION.SDK_INT < O")
-    }
+    var newDate =
+        mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString())
+
+    //val newDate=
     var tasksDB: TasksDB? = null
 
 
     fun insertTask() = viewModelScope.launch {
-        val descriptionItem = tasksDB?.copy(description = newText.value) ?: TasksDB(
-            description = newText.value,
-            isCompleted = false,
-            dateSelect = newDate.value
-        )////isCompleted-уточнить
+        val descriptionItem =
+            tasksDB?.copy(description = newText.value, dateSelect = newDate.value) ?: TasksDB(
+                description = newText.value,
+                isCompleted = false,
+                dateSelect = newDate.value
+            )
         database.dao.insertTask(descriptionItem)
         tasksDB = null
         newText.value = ""
+        newDate.value = LocalDate.now().toString()
     }
 
     fun completedTask(item: TasksDB) = viewModelScope.launch {
+        //delay(1000)
         database.dao.deleteCompletedTasks(item)
     }
 

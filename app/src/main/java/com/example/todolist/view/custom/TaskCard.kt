@@ -5,19 +5,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.todolist.model.TasksDB
+import com.example.todolist.model.db.TasksDB
 
 @Composable
 fun TaskCard(
     item: TasksDB,
     onClick: (TasksDB) -> Unit,
     onClickDelete: (TasksDB) -> Unit,
+    color: Color
 ) {
 
     Card(
@@ -26,8 +29,12 @@ fun TaskCard(
             .padding(5.dp)
             .clickable {
                 onClick(item)
-            }
-    )
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = color,
+        ),
+
+        )
     {
 
         Row(
@@ -35,7 +42,8 @@ fun TaskCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = item.description, modifier = Modifier
+                text = "${item.description}-${item.dateSelect} ",
+                modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(5.dp)

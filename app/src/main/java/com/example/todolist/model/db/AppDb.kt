@@ -1,4 +1,4 @@
-package com.example.todolist.model
+package com.example.todolist.model.db
 
 import android.content.Context
 import androidx.room.Database
@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [TasksDB::class], version = 1)
+@Database(entities = [TasksDB::class], version = 2)
 abstract class AppDb() : RoomDatabase() {
 
     abstract val dao: Dao
@@ -18,7 +18,7 @@ abstract class AppDb() : RoomDatabase() {
                 context,
                 AppDb::class.java,
                 "todo.db"//last-test
-            ).build()
+            ).fallbackToDestructiveMigration().build()
         }
     }
 }

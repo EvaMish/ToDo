@@ -1,9 +1,7 @@
-package com.example.todolist.model
+package com.example.todolist.model.db
 
-import android.provider.ContactsContract.Data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity("tasks")
 data class TasksDB(
@@ -11,6 +9,5 @@ data class TasksDB(
     val idTask: Int? = null,
     val description: String,
     var isCompleted:Boolean,
-    var dateSelect:String
-
+    var dateSelect: String? = null
     )// добавить поле для времени исполнения задачи

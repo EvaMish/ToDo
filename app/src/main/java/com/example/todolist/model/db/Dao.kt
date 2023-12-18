@@ -1,4 +1,4 @@
-package com.example.todolist.model
+package com.example.todolist.model.db
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 
 @Dao
 interface Dao {
@@ -18,9 +17,10 @@ interface Dao {
 
 
     @Delete
-    suspend fun deleteCompletedTasks(idTasks:TasksDB)
+    suspend fun deleteCompletedTasks(idTasks: TasksDB)
 
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): Flow<List<TasksDB>>
+
 
 }

@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todolist.ui.theme.ToDoListTheme
 import com.example.todolist.view.screens.MainScreen
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            AndroidThreeTen.init(this)
             ToDoListTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -24,6 +26,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     MainScreen()
+
                 }
             }
         }

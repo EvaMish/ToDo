@@ -1,6 +1,5 @@
 package com.example.todolist.view.custom
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -8,10 +7,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.example.todolist.model.db.converters.convertMillisToDate
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +19,7 @@ fun MyDatePickerDialog(
 ) {
     val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-            return utcTimeMillis <= System.currentTimeMillis()
+            return utcTimeMillis >= System.currentTimeMillis() || isToday(utcTimeMillis)
         }
     })
 
@@ -53,8 +51,18 @@ fun MyDatePickerDialog(
             state = datePickerState
         )
     }
+
+
+
+
 }
-private fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy")
-    return formatter.format(Date(millis))
+
+ private fun isToday(utcTimeMillis: Long): Boolean {
+    val todayCalendar = Calendar.getInstance()
+    val selectedCalendar = Calendar.getInstance()
+    selectedCalendar.timeInMillis = utcTimeMillis
+    return todayCalendar.get(Calendar.YEAR) == selectedCalendar.get(Calendar.YEAR) &&
+            todayCalendar.get(Calendar.DAY_OF_YEAR) == selectedCalendar.get(Calendar.DAY_OF_YEAR)
 }
+
+

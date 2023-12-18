@@ -53,7 +53,11 @@ android {
 dependencies {
      //room
     implementation("androidx.room:room-runtime:2.5.1")
+    implementation("com.google.android.libraries.places:places:3.3.0")
     kapt("androidx.room:room-compiler:2.5.1")
+
+    implementation ("com.jakewharton.threetenabp:threetenabp:1.3.0")
+
 
     implementation ("androidx.compose.material3:material3:1.2.0-alpha02")
 
